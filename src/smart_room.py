@@ -77,6 +77,9 @@ class SmartRoom:
         if int(delta_temp) > 2:
             self.change_servo_angle(12)
             self.window_open = True
+        else:
+            self.change_servo_angle(0)
+            self.window_open = False
 
 
 

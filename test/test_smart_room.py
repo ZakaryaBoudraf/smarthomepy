@@ -43,14 +43,20 @@ class TestSmartRoom(unittest.TestCase):
     #     system.manage_light_level()
     #     mock_light.assert_called_with(system.LED_PIN, True)
     #     self.assertTrue(system.light_on)
-
     @patch.object(GPIO, "output")
-    @patch.object(Adafruit_BMP280_I2C, "temperature")
-    @patch.object(Adafruit_BMP280_I2C, "temperature")
-    def test_manage_window_open_if_temp_inside_is_lower_than_outside (self, mock_indoor_temp_sensor: Mock, mock_outdoor_temp_sensor: Mock, mock_window_servo: Mock):
-        mock_indoor_temp_sensor.return_value = 20
-        mock_outdoor_temp_sensor.return_value = 24
+    @patch.object(Adafruit_BMP280_I2C, "temperature", new_callable=PropertyMock)
+    def test_manage_window_open_if_temp_inside_is_lower_than_outside (self, mock_temp_sensors: Mock, mock_window_servo: Mock):
+        mock_temp_sensors.side_effect = [18,23]
         system = SmartRoom()
         system.manage_window()
         mock_window_servo.assert_called_with(12)
         self.assertTrue(system.window_open())
+
+    @patch.object(GPIO, "output")
+    @patch.object(Adafruit_BMP280_I2C, "temperature", new_callable=PropertyMock)
+    def test_manage_window_close_if_temp_inside_is_higher_than_outside (self, mock_temp_sensors: Mock, mock_window_servo: Mock):
+        mock_temp_sensors.side_effect = [25,18]
+        system = SmartRoom()
+        system.manage_window()
+        mock_window_servo.assert_called_with(0)
+        self.assertFalse(system.window_open())
