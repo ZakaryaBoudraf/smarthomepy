@@ -84,9 +84,6 @@ class SmartRoom:
 
 
     def monitor_air_quality(self) -> None:
-        # To be implemented
-        pass
-
 
     def change_servo_angle(self, duty_cycle):
         """
