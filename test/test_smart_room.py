@@ -48,8 +48,8 @@ class TestSmartRoom(unittest.TestCase):
     @patch.object(Adafruit_BMP280_I2C, "temperature")
     @patch.object(Adafruit_BMP280_I2C, "temperature")
     def test_manage_window_open_if_temp_inside_is_lower_than_outside (self, mock_indoor_temp_sensor: Mock, mock_outdoor_temp_sensor: Mock, mock_window_servo: Mock):
-        mock_indoor_temp_sensor.return_value = 18
-        mock_outdoor_temp_sensor.return_value = 20
+        mock_indoor_temp_sensor.return_value = 20
+        mock_outdoor_temp_sensor.return_value = 24
         system = SmartRoom()
         system.manage_window()
         mock_window_servo.assert_called_with(12)
