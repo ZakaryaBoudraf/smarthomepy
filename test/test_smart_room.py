@@ -11,7 +11,13 @@ from mock.senseair_s8 import SenseairS8
 class TestSmartRoom(unittest.TestCase):
 
     @patch.object(GPIO, "input")
-    def test_check_room_occupancy_true(self, mock_infrared_sensor: Mock):
+    def test_check_room_occupancy_is_true(self, mock_infrared_sensor: Mock):
         system = SmartRoom()
         mock_infrared_sensor.return_value = True
         self.assertTrue(system.check_room_occupancy())
+
+    @patch.object(GPIO, "input")
+    def test_check_enough_light_is_true (self, mock_photoresistor: Mock):
+        system = SmartRoom()
+        mock_photoresistor.return_value = True
+        self.assertTrue(system.check_enough_light())
