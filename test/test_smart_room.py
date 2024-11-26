@@ -22,12 +22,13 @@ class TestSmartRoom(unittest.TestCase):
         mock_photoresistor.return_value = True
         self.assertTrue(system.check_enough_light())
 
-    @patch.object(GPIO, "input")
-    @patch.object(GPIO, "input")
     @patch.object(GPIO, "output")
+    @patch.object(GPIO, "input")
+    @patch.object(GPIO, "input")
     def test_manage_light_level_turns_on (self, mock_photoresistor: Mock, mock_infrared_sensor: Mock, mock_LED: Mock):
-        system = SmartRoom()
         mock_infrared_sensor.return_value = True
         mock_photoresistor.return_value = False
+        system = SmartRoom()
+        system.manage_light_level()
         mock_LED.assert_called_once_with(system.LED_PIN, True)
         self.assertTrue(system.light_on)
